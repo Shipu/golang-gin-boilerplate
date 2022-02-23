@@ -1,4 +1,4 @@
-package main
+package routes
 
 import (
 	"golang-gin-boilerplate/app/routes"
