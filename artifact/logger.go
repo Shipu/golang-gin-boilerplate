@@ -2,7 +2,6 @@ package artifact
 
 import (
 	"go.uber.org/zap"
-	"go.uber.org/zap/zapcore"
 )
 
 var globalLog Logger
@@ -18,15 +17,15 @@ func GetLogger() Logger {
 }
 
 // NewLogger sets up logger
-func NewLogger(env Env) Logger {
+func NewLogger(env interface{}) Logger {
 
 	config := zap.NewDevelopmentConfig()
 
-	if env.Environment == "local" {
-		config.EncoderConfig.EncodeLevel = zapcore.CapitalColorLevelEncoder
-	} else {
-		config.Level.SetLevel(zap.PanicLevel)
-	}
+	//if env.Environment == "local" {
+	//	config.EncoderConfig.EncodeLevel = zapcore.CapitalColorLevelEncoder
+	//} else {
+	//	config.Level.SetLevel(zap.PanicLevel)
+	//}
 
 	logger, _ := config.Build()
 

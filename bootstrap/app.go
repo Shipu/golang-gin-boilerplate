@@ -33,12 +33,12 @@ func NewApp() *App {
 	Router = artifact.NewRouter()
 	Response = artifact.ResponseBuilder{}
 
-	gin.SetMode(env.GinMode)
+	gin.SetMode(env.App.GinMode)
 
 	Application = &App{
-		Name:     env.AppName,
-		Url:      env.URL,
-		Port:     env.Port,
+		Name:     env.App.Name,
+		Url:      env.App.Url,
+		Port:     env.App.Port,
 		Env:      env,
 		Logger:   logger,
 		Router:   Router,

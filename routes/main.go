@@ -7,4 +7,5 @@ import (
 // RegisterRoute Register your routes here
 func RegisterRoute() {
 	routes.Setup()
+	//artifact.ExceptionHandler(Application.Router)
 }

@@ -13,7 +13,13 @@ type Router struct {
 //NewRouter : all the routes are defined here
 func NewRouter() *Router {
 
-	httpRouter := gin.Default()
+	gin.ForceConsoleColor()
+
+	//gin.SetMode("debug")
+
+	httpRouter := gin.New()
+
+	//httpRouter.SetTrustedProxies([]string{"0.0.0.0"})
 
 	httpRouter.GET("/health-check", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"data": "Up and Running"})
