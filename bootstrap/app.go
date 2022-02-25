@@ -3,54 +3,54 @@ package bootstrap
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"golang-gin-boilerplate/artifact"
+	"golang-gin-boilerplate/config"
+	"net/http"
 )
 
-var Application *App
+var Res ResponseBuilder
 
-var Router *artifact.Router
+var Log LoggerBuilder
 
-var Response artifact.ResponseBuilder
+func loadRoute() {
 
-type App struct {
-	Name     string
-	Url      string
-	Port     int
-	Env      artifact.Env
-	Response artifact.ResponseBuilder
-	Logger   artifact.Logger
-	Router   *artifact.Router
+	gin.ForceConsoleColor()
+
+	//gin.SetMode("debug")
+
+	Router = gin.Default()
+
+	//httpRouter.SetTrustedProxies([]string{"0.0.0.0"})
+
+	Router.GET("/health-check", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{"data": "Up and Running"})
+	})
 }
 
-func (app App) Run() {
-	app.Router.Run(fmt.Sprintf(":%d", app.Port))
+func loadConfig() {
+	Config = NewConfig()
+	Config.AddConfig("App", new(config.AppConfig))
+	Config.AddConfig("Database", new(config.DatabaseConfig))
+
+	Config.Load()
 }
 
-func NewApp() *App {
-	env := artifact.NewEnv()
-	logger := artifact.NewLogger(env)
-
-	Router = artifact.NewRouter()
-	Response = artifact.ResponseBuilder{}
-
-	gin.SetMode(env.App.GinMode)
-
-	Application = &App{
-		Name:     env.App.Name,
-		Url:      env.App.Url,
-		Port:     env.App.Port,
-		Env:      env,
-		Logger:   logger,
-		Router:   Router,
-		Response: Response,
-	}
-
-	return Application
+func initializeLogger(isLocal string) LoggerBuilder {
+	return NewLogger(isLocal)
 }
 
-func Run() *App {
+func init() {
+	loadRoute()
+	loadConfig()
+	isLocal, _ := Config.GetString("App.Environment")
+	Log = initializeLogger(isLocal)
+}
 
-	Application.Run()
+func Start() {
 
-	return Application
+}
+
+func Run() {
+	port, _ := Config.Get("App.Port")
+
+	Router.Run(fmt.Sprintf(":%d", port))
 }

@@ -1,14 +1,14 @@
 package main
 
 import (
+	"golang-gin-boilerplate/app/routes"
 	"golang-gin-boilerplate/bootstrap"
-	"golang-gin-boilerplate/routes"
 )
 
 func main() {
-	bootstrap.NewApp()
+	bootstrap.Start()
 
-	routes.RegisterRoute()
+	routes.Setup()
 
 	bootstrap.Run()
 }

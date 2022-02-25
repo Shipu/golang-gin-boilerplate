@@ -7,6 +7,6 @@ import (
 
 func Setup() {
 	Router.GET("/", func(c *gin.Context) {
-		Response.Message("Done").Data("yes").Json(c)
+		Res.Message("Done").Data("ok").Json(c)
 	})
 }
