@@ -2,7 +2,7 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
-	. "golang-gin-boilerplate/bootstrap"
+	. "golang-gin-boilerplate/artifact"
 )
 
 func Setup() {

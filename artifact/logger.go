@@ -1,4 +1,4 @@
-package bootstrap
+package artifact
 
 import (
 	"go.uber.org/zap"

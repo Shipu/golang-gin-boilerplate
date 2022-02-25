@@ -2,13 +2,13 @@ package main
 
 import (
 	"golang-gin-boilerplate/app/routes"
-	"golang-gin-boilerplate/bootstrap"
+	"golang-gin-boilerplate/artifact"
 )
 
 func main() {
-	bootstrap.Start()
+	artifact.Start()
 
 	routes.Setup()
 
-	bootstrap.Run()
+	artifact.Run()
 }
