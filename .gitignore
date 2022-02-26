@@ -15,5 +15,4 @@
 vendor/
 tmp/
 .idea
-.air.toml
 .env
