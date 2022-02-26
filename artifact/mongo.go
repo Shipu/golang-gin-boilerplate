@@ -12,13 +12,13 @@ import (
 var Mongo *MongoDB
 
 type MongoDB struct {
-	client   *mongo.Client
-	database *mongo.Database
+	Client   *mongo.Client
+	Database *mongo.Database
 }
 
 func NewMongoDB() *MongoDB {
 
-	mongoUri := "mongodb+srv://" + Config.GetString("Database.Username") + ":" + Config.GetString("Database.Password") + "@" + Config.GetString("Database.Host") + "/" + Config.GetString("Database.Database") + "?retryWrites=true&w=majority"
+	mongoUri := "mongodb+srv://" + Config.GetString("DB.Username") + ":" + Config.GetString("DB.Password") + "@" + Config.GetString("DB.Host") + "/" + Config.GetString("DB.Database") + "?retryWrites=true&w=majority"
 
 	client, err := mongo.NewClient(options.Client().ApplyURI(mongoUri))
 	if err != nil {
@@ -39,7 +39,7 @@ func NewMongoDB() *MongoDB {
 
 	fmt.Println("[C-Log] Connected to MongoDB")
 
-	database := client.Database(Config.GetString("Database.Database"))
+	database := client.Database(Config.GetString("DB.Database"))
 
-	return &MongoDB{client: client, database: database}
+	return &MongoDB{Client: client, Database: database}
 }

@@ -7,4 +7,8 @@ import (
 
 func Setup() {
 	artifact.Router.GET("todos", TodoIndex())
+	artifact.Router.POST("todos", TodoCreate())
+	artifact.Router.GET("todos/:todoId", TodoShow())
+	artifact.Router.POST("todos/:todoId", TodoUpdate())
+	artifact.Router.DELETE("todos/:todoId", TodoDelete())
 }

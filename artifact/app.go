@@ -27,7 +27,7 @@ func loadRoute() {
 func loadConfig() {
 	Config = NewConfig()
 	Config.AddConfig("App", new(config.AppConfig))
-	Config.AddConfig("Database", new(config.DatabaseConfig))
+	Config.AddConfig("DB", new(config.DatabaseConfig))
 
 	Config.Load()
 }

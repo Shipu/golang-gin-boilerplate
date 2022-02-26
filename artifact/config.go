@@ -24,7 +24,7 @@ func NewConfig() *Configuration {
 func (configuration *Configuration) Load() map[string]interface{} {
 	newConfig := make(map[string]interface{})
 	for name, value := range configuration.RegisteredConfigStruct {
-		viper.SetConfigFile("_.env")
+		viper.SetConfigFile(".env")
 
 		err := viper.ReadInConfig()
 		if err != nil {

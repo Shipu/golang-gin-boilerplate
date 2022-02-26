@@ -40,3 +40,7 @@ func (response *ResponseBuilder) Build() interface{} {
 func (response *ResponseBuilder) Json(c *gin.Context) {
 	c.JSON(response.Response.Status, response.Build())
 }
+
+func (response *ResponseBuilder) AbortWithStatusJSON(c *gin.Context) {
+	c.AbortWithStatusJSON(response.Response.Status, response.Build())
+}
