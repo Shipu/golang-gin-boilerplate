@@ -2,7 +2,6 @@ package controllers
 
 import "C"
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"golang-gin-boilerplate/artifact"
 	"golang-gin-boilerplate/cmd/todo/models"
@@ -48,7 +47,6 @@ func TodoShow() gin.HandlerFunc {
 		}()
 
 		todoId := c.Param("todoId")
-		fmt.Println(todoId)
 
 		todo := services.ATodo(todoId)
 
@@ -58,7 +56,22 @@ func TodoShow() gin.HandlerFunc {
 
 func TodoUpdate() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		defer func() {
+			if err := recover(); err != nil {
+				artifact.Res.Status(http.StatusUnprocessableEntity).Message("error").Data(err).Json(c)
+			}
+		}()
 
+		todoId := c.Param("todoId")
+
+		todo, err := services.UpdateATodo(todoId)
+
+		if err != nil {
+			artifact.Res.Status(http.StatusInternalServerError).Message("something wrong").Json(c)
+			return
+		}
+
+		artifact.Res.Status(http.StatusOK).Message("Successfully Delete !!!").Data(todo).Json(c)
 	}
 }
 
@@ -66,6 +79,7 @@ func TodoDelete() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		defer func() {
 			if err := recover(); err != nil {
+				artifact.Res.Status(http.StatusUnprocessableEntity).Message("error").Data(err).Json(c)
 				artifact.Res.Status(http.StatusUnprocessableEntity).Message("error").Data(err).Json(c)
 			}
 		}()
@@ -75,6 +89,7 @@ func TodoDelete() gin.HandlerFunc {
 
 		if !err {
 			artifact.Res.Status(http.StatusInternalServerError).Message("something wrong").Json(c)
+			return
 		}
 
 		artifact.Res.Status(http.StatusOK).Message("Successfully Delete !!!").Data(todo).Json(c)

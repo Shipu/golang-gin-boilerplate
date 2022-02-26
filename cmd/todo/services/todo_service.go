@@ -54,8 +54,24 @@ func CreateATodo(todo models.Todo) models.Todo {
 	return newEnrollment
 }
 
-func UpdateATodo() {
+func UpdateATodo(todoId string) (models.Todo, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	var todo models.Todo
+	defer cancel()
 
+	objId, _ := primitive.ObjectIDFromHex(todoId)
+
+	result := artifact.Mongo.Database.Collection("todos").FindOneAndUpdate(ctx, bson.M{"_id": objId}, bson.D{
+		{"$set", bson.M{"task": todo.Task, "status": todo.Status}},
+	})
+	if result.Err() != nil {
+		log.Println("Err ", result.Err())
+		return models.Todo{}, result.Err()
+	}
+	if err := result.Decode(&todo); err != nil {
+		return models.Todo{}, err
+	}
+	return todo, nil
 }
 
 func ATodo(todoId string) models.Todo {
