@@ -1,4 +1,4 @@
-package bootstrap
+package artifact
 
 import (
 	"go.uber.org/zap"
@@ -18,7 +18,9 @@ func GetLogger() LoggerBuilder {
 }
 
 // NewLogger sets up logger
-func NewLogger(isLocal string) LoggerBuilder {
+func NewLogger() LoggerBuilder {
+
+	isLocal := Config.GetString("App.Environment")
 
 	config := zap.NewDevelopmentConfig()
 

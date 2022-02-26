@@ -1,4 +1,4 @@
-package bootstrap
+package artifact
 
 import (
 	"fmt"
@@ -8,8 +8,6 @@ import (
 )
 
 var Res ResponseBuilder
-
-var Log LoggerBuilder
 
 func loadRoute() {
 
@@ -34,19 +32,23 @@ func loadConfig() {
 	Config.Load()
 }
 
-func initializeLogger(isLocal string) LoggerBuilder {
-	return NewLogger(isLocal)
+func initializeLogger() LoggerBuilder {
+	return NewLogger()
+}
+
+func connectDb() {
+	Mongo = NewMongoDB()
 }
 
 func init() {
 	loadRoute()
 	loadConfig()
-	isLocal, _ := Config.GetString("App.Environment")
-	Log = initializeLogger(isLocal)
 }
 
 func Start() {
+	initializeLogger()
 
+	connectDb()
 }
 
 func Run() {

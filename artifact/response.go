@@ -1,11 +1,11 @@
-package bootstrap
+package artifact
 
 import (
 	"github.com/gin-gonic/gin"
 )
 
 type Response struct {
-	Status  int         `json:"status"`
+	Status  int         `json:"status_code"`
 	Message string      `json:"message"`
 	Data    interface{} `json:"data"`
 }
@@ -34,7 +34,7 @@ func (response *ResponseBuilder) Build() interface{} {
 		response.Status(200)
 	}
 
-	return map[string]interface{}{"status": response.Response.Status, "message": response.Response.Message, "data": response.Response.Data}
+	return map[string]interface{}{"status_code": response.Response.Status, "message": response.Response.Message, "data": response.Response.Data}
 }
 
 func (response *ResponseBuilder) Json(c *gin.Context) {

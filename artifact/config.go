@@ -1,4 +1,4 @@
-package bootstrap
+package artifact
 
 import (
 	"github.com/goldeneggg/structil"
@@ -65,13 +65,15 @@ func (configuration Configuration) prepareConfigKey(key string) (string, string)
 	return rootKey, key
 }
 
-func (configuration *Configuration) GetString(key string) (string, bool) {
+func (configuration *Configuration) GetString(key string) string {
 
 	rootKey, key := configuration.prepareConfigKey(key)
 
 	newGetter, _ := structil.NewGetter(configuration.LoadedConfig[rootKey])
 
-	return newGetter.String(key)
+	value, _ := newGetter.String(key)
+
+	return value
 }
 
 func (configuration Configuration) GetInt(key string) (int, bool) {
