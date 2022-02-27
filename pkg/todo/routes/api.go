@@ -2,7 +2,7 @@ package routes
 
 import (
 	"golang-gin-boilerplate/artifact"
-	. "golang-gin-boilerplate/cmd/todo/controllers"
+	. "golang-gin-boilerplate/pkg/todo/controllers"
 )
 
 func Setup() {

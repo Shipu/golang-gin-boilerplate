@@ -3,7 +3,7 @@ package routes
 import (
 	"github.com/gin-gonic/gin"
 	. "golang-gin-boilerplate/artifact"
-	"golang-gin-boilerplate/cmd/todo/routes"
+	"golang-gin-boilerplate/pkg/todo/routes"
 )
 
 func RegisterRoute() {

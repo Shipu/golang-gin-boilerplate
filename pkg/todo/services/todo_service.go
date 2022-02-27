@@ -7,7 +7,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"golang-gin-boilerplate/artifact"
-	"golang-gin-boilerplate/cmd/todo/models"
+	"golang-gin-boilerplate/pkg/todo/models"
 	"log"
 	"time"
 )
