@@ -43,15 +43,16 @@ func connectDb() {
 func init() {
 	loadRoute()
 	loadConfig()
+	connectDb()
 }
 
 func Start() {
 	initializeLogger()
 
-	connectDb()
 }
 
 func Run() {
+	defer Mongo.Client.Disconnect(Mongo.Ctx)
 	port, _ := Config.Get("App.Port")
 
 	Router.Run(fmt.Sprintf(":%d", port))

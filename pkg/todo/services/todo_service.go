@@ -6,16 +6,12 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
-	"golang-gin-boilerplate/artifact"
 	"golang-gin-boilerplate/pkg/todo/models"
 	"log"
-	"time"
 )
 
 func AllTodo() []models.Todo {
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	cursor, err := artifact.Mongo.Database.Collection("todos").Find(ctx, bson.M{})
-	defer cancel()
+	cursor, err, ctx := models.TodoCollection.Find(bson.M{})
 
 	var todos []models.Todo
 
@@ -37,16 +33,13 @@ func AllTodo() []models.Todo {
 }
 
 func CreateATodo(todo models.Todo) models.Todo {
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
-
 	newEnrollment := models.Todo{
 		Id:     primitive.NewObjectID(),
 		Task:   todo.Task,
 		Status: todo.Status,
 	}
 
-	result, err := artifact.Mongo.Database.Collection("todos").InsertOne(ctx, newEnrollment)
+	result, err := models.TodoCollection.InsertOne(newEnrollment)
 	if err != nil || result == nil {
 		panic(err)
 	}
@@ -55,13 +48,11 @@ func CreateATodo(todo models.Todo) models.Todo {
 }
 
 func UpdateATodo(todoId string) (models.Todo, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	var todo models.Todo
-	defer cancel()
 
 	objId, _ := primitive.ObjectIDFromHex(todoId)
 
-	result := artifact.Mongo.Database.Collection("todos").FindOneAndUpdate(ctx, bson.M{"_id": objId}, bson.D{
+	result := models.TodoCollection.FindOneAndUpdate(bson.M{"_id": objId}, bson.D{
 		{"$set", bson.M{"task": todo.Task, "status": todo.Status}},
 	})
 	if result.Err() != nil {
@@ -75,13 +66,11 @@ func UpdateATodo(todoId string) (models.Todo, error) {
 }
 
 func ATodo(todoId string) models.Todo {
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	var todo models.Todo
-	defer cancel()
 
 	objId, _ := primitive.ObjectIDFromHex(todoId)
 
-	err := artifact.Mongo.Database.Collection("todos").FindOne(ctx, bson.M{"_id": objId}).Decode(&todo)
+	err := models.TodoCollection.FindOne(bson.M{"_id": objId}).Decode(&todo)
 
 	if err != nil {
 		fmt.Println(err)
@@ -92,14 +81,11 @@ func ATodo(todoId string) models.Todo {
 }
 
 func DeleteATodo(todoId string) (error, bool) {
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	var todo models.Todo
-	defer cancel()
 
 	objId, _ := primitive.ObjectIDFromHex(todoId)
 
-	result := artifact.Mongo.Database.Collection("todos").FindOneAndDelete(ctx, bson.D{{"_id", objId}})
-	fmt.Println()
+	result := models.TodoCollection.FindOneAndDelete(bson.D{{"_id", objId}})
 
 	if result.Err() != nil {
 		return result.Err(), false
