@@ -23,6 +23,11 @@ type MongoCollection struct {
 	CancelFunc context.CancelFunc
 }
 
+func (mongoCollection MongoCollection) WithContext() MongoCollection {
+	mongoCollection.Ctx, mongoCollection.CancelFunc = context.WithTimeout(context.Background(), 10*time.Second)
+	return mongoCollection
+}
+
 func NewMongoDB() *MongoDB {
 
 	mongoUri := "mongodb+srv://" + Config.GetString("DB.Username") + ":" + Config.GetString("DB.Password") + "@" + Config.GetString("DB.Host") + "/" + Config.GetString("DB.Database") + "?retryWrites=true&w=majority"
@@ -51,34 +56,45 @@ func NewMongoDB() *MongoDB {
 	return &MongoDB{Client: client, Database: database, Ctx: ctx}
 }
 
-func (mongodb *MongoDB) Collection(name string) *MongoCollection {
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	return &MongoCollection{mongodb.Database.Collection(name), ctx, cancel}
+func (mongodb *MongoDB) Collection(name string) MongoCollection {
+	return MongoCollection{Collection: mongodb.Database.Collection(name)}
 }
 
 func (collection MongoCollection) Find(filter interface{},
 	opts ...*options.FindOptions) (*mongo.Cursor, error, context.Context) {
 
-	cursor, err := collection.Collection.Find(nil, filter, opts...)
+	collection = collection.WithContext()
+	defer collection.CancelFunc()
+
+	cursor, err := collection.Collection.Find(collection.Ctx, filter, opts...)
 	return cursor, err, collection.Ctx
 }
 
 func (collection MongoCollection) InsertOne(document interface{},
 	opts ...*options.InsertOneOptions) (*mongo.InsertOneResult, error) {
 
-	return collection.Collection.InsertOne(nil, document, opts...)
+	collection = collection.WithContext()
+	defer collection.CancelFunc()
+
+	return collection.Collection.InsertOne(collection.Ctx, document, opts...)
 }
 
 func (collection MongoCollection) FindOneAndUpdate(filter interface{},
 	update interface{}, opts ...*options.FindOneAndUpdateOptions) *mongo.SingleResult {
 
-	return collection.Collection.FindOneAndUpdate(nil, filter, update, opts...)
+	collection = collection.WithContext()
+	defer collection.CancelFunc()
+
+	return collection.Collection.FindOneAndUpdate(collection.Ctx, filter, update, opts...)
 }
 
 func (collection MongoCollection) FindOne(filter interface{},
 	opts ...*options.FindOneOptions) *mongo.SingleResult {
 
-	result := collection.Collection.FindOne(nil, filter, opts...)
+	collection = collection.WithContext()
+	defer collection.CancelFunc()
+
+	result := collection.Collection.FindOne(collection.Ctx, filter, opts...)
 
 	return result
 }
@@ -86,5 +102,8 @@ func (collection MongoCollection) FindOne(filter interface{},
 func (collection MongoCollection) FindOneAndDelete(filter interface{},
 	opts ...*options.FindOneAndDeleteOptions) *mongo.SingleResult {
 
-	return collection.Collection.FindOneAndDelete(nil, filter, opts...)
+	collection = collection.WithContext()
+	defer collection.CancelFunc()
+
+	return collection.Collection.FindOneAndDelete(collection.Ctx, filter, opts...)
 }

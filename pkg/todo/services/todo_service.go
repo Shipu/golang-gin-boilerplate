@@ -6,6 +6,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 	"golang-gin-boilerplate/pkg/todo/models"
 	"log"
 )
@@ -47,22 +48,31 @@ func CreateATodo(todo models.Todo) models.Todo {
 	return newEnrollment
 }
 
-func UpdateATodo(todoId string) (models.Todo, error) {
-	var todo models.Todo
+func UpdateATodo(todoId string, updateTodo models.Todo) (models.Todo, error) {
 
 	objId, _ := primitive.ObjectIDFromHex(todoId)
 
+	upsert := true
+	after := options.After
+	opt := options.FindOneAndUpdateOptions{
+		ReturnDocument: &after,
+		Upsert:         &upsert,
+	}
+
 	result := models.TodoCollection.FindOneAndUpdate(bson.M{"_id": objId}, bson.D{
-		{"$set", bson.M{"task": todo.Task, "status": todo.Status}},
-	})
+		{"$set", bson.M{"task": updateTodo.Task, "status": updateTodo.Status}},
+	}, &opt)
+
 	if result.Err() != nil {
 		log.Println("Err ", result.Err())
 		return models.Todo{}, result.Err()
 	}
-	if err := result.Decode(&todo); err != nil {
+
+	if err := result.Decode(&updateTodo); err != nil {
 		return models.Todo{}, err
 	}
-	return todo, nil
+
+	return updateTodo, nil
 }
 
 func ATodo(todoId string) models.Todo {

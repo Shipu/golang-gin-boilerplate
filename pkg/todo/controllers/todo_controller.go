@@ -42,7 +42,7 @@ func TodoShow() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		defer func() {
 			if err := recover(); err != nil {
-				artifact.Res.Status(http.StatusUnprocessableEntity).Message("error").Data(err).Json(c)
+				artifact.Res.Status(http.StatusNotFound).Message(http.StatusText(http.StatusNotFound)).Json(c)
 			}
 		}()
 
@@ -56,22 +56,29 @@ func TodoShow() gin.HandlerFunc {
 
 func TodoUpdate() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		var updateTodo models.Todo
+
 		defer func() {
 			if err := recover(); err != nil {
-				artifact.Res.Status(http.StatusUnprocessableEntity).Message("error").Data(err).Json(c)
+				artifact.Res.Status(http.StatusUnprocessableEntity).Message(http.StatusText(http.StatusUnprocessableEntity)).Data(err).Json(c)
 			}
 		}()
 
 		todoId := c.Param("todoId")
 
-		todo, err := services.UpdateATodo(todoId)
-
-		if err != nil {
-			artifact.Res.Status(http.StatusInternalServerError).Message("something wrong").Json(c)
+		if err := c.ShouldBind(&updateTodo); err != nil {
+			artifact.Res.Status(http.StatusBadRequest).Message(http.StatusText(http.StatusBadRequest)).Data(err.Error()).AbortWithStatusJSON(c)
 			return
 		}
 
-		artifact.Res.Status(http.StatusOK).Message("Successfully Delete !!!").Data(todo).Json(c)
+		todo, err := services.UpdateATodo(todoId, updateTodo)
+
+		if err != nil {
+			artifact.Res.Status(http.StatusInternalServerError).Message(http.StatusText(http.StatusInternalServerError)).Json(c)
+			return
+		}
+
+		artifact.Res.Status(http.StatusOK).Message("Successfully Updated !!!").Data(todo).Json(c)
 	}
 }
 
@@ -79,7 +86,6 @@ func TodoDelete() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		defer func() {
 			if err := recover(); err != nil {
-				artifact.Res.Status(http.StatusUnprocessableEntity).Message("error").Data(err).Json(c)
 				artifact.Res.Status(http.StatusUnprocessableEntity).Message("error").Data(err).Json(c)
 			}
 		}()

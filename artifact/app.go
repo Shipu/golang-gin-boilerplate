@@ -53,6 +53,7 @@ func Start() {
 
 func Run() {
 	defer Mongo.Client.Disconnect(Mongo.Ctx)
+
 	port, _ := Config.Get("App.Port")
 
 	Router.Run(fmt.Sprintf(":%d", port))
