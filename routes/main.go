@@ -6,7 +6,13 @@ import (
 	todoRoute "github.com/shipu/golang-gin-boilerplate/pkg/todo/routes"
 )
 
-func RegisterRoute() {
+func Register() {
+	BaseRoute()
+
+	todoRoute.Setup()
+}
+
+func BaseRoute() {
 	Router.GET("/", func(c *gin.Context) {
 		data := map[string]interface{}{
 			"app": Config.GetString("App.Name"),
@@ -21,6 +27,4 @@ func RegisterRoute() {
 			Message("success").
 			Data(data).Json(c)
 	})
-
-	todoRoute.Setup()
 }

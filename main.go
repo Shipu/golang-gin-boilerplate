@@ -7,10 +7,15 @@ import (
 )
 
 func main() {
+	// Initialize the application
 	artifact.New()
+	config.Register() // will load the config file
+	routes.Register() // will register all the routes
 
-	config.RegisterConfig()
-	routes.RegisterRoute()
+	// After Initialize Set up the application for serve
+	artifact.Start() // Database connection will be established here
+	config.Boot()    // if you need any initialization
 
 	artifact.Run()
+
 }
