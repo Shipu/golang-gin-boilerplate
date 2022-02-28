@@ -1,11 +1,12 @@
 package models
 
 import (
+	"github.com/shipu/artifact"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	"golang-gin-boilerplate/artifact"
 )
 
-var TodoCollection artifact.MongoCollection = artifact.Mongo.Collection("todos")
+//var TodoCollection artifact.MongoCollection = artifact.Mongo.Collection("todos")
+var TodoCollection artifact.MongoCollection
 
 type Todo struct {
 	Id     primitive.ObjectID `json:"id,omitempty" bson:"_id"`

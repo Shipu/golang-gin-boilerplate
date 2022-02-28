@@ -3,9 +3,9 @@ package controllers
 import "C"
 import (
 	"github.com/gin-gonic/gin"
-	"golang-gin-boilerplate/artifact"
-	"golang-gin-boilerplate/pkg/todo/models"
-	"golang-gin-boilerplate/pkg/todo/services"
+	"github.com/shipu/artifact"
+	"github.com/shipu/golang-gin-boilerplate/pkg/todo/models"
+	"github.com/shipu/golang-gin-boilerplate/pkg/todo/services"
 	"net/http"
 )
 

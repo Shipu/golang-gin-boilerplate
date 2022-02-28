@@ -1,13 +1,15 @@
 package main
 
 import (
-	"golang-gin-boilerplate/artifact"
-	"golang-gin-boilerplate/routes"
+	"github.com/shipu/artifact"
+	"github.com/shipu/golang-gin-boilerplate/config"
+	"github.com/shipu/golang-gin-boilerplate/routes"
 )
 
 func main() {
-	artifact.Start()
+	artifact.New()
 
+	config.RegisterConfig()
 	routes.RegisterRoute()
 
 	artifact.Run()

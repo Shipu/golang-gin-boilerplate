@@ -1,14 +1,14 @@
 package routes
 
 import (
-	"golang-gin-boilerplate/artifact"
-	. "golang-gin-boilerplate/pkg/todo/controllers"
+	. "github.com/shipu/artifact"
+	c "github.com/shipu/golang-gin-boilerplate/pkg/todo/controllers"
 )
 
 func Setup() {
-	artifact.Router.GET("todos", TodoIndex())
-	artifact.Router.POST("todos", TodoCreate())
-	artifact.Router.GET("todos/:todoId", TodoShow())
-	artifact.Router.PUT("todos/:todoId", TodoUpdate())
-	artifact.Router.DELETE("todos/:todoId", TodoDelete())
+	Router.GET("todos", c.TodoIndex())
+	Router.POST("todos", c.TodoCreate())
+	Router.GET("todos/:todoId", c.TodoShow())
+	Router.PUT("todos/:todoId", c.TodoUpdate())
+	Router.DELETE("todos/:todoId", c.TodoDelete())
 }
