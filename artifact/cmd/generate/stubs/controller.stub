@@ -1,0 +1,103 @@
+package controllers
+
+import "C"
+import (
+	"github.com/gin-gonic/gin"
+	"golang-gin-boilerplate/artifact"
+	"golang-gin-boilerplate/pkg/{{SingularLowerName}}/models"
+	"golang-gin-boilerplate/pkg/{{SingularLowerName}}/services"
+	"net/http"
+)
+
+func {{TitleName}}Index() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		{{PluralLowerName}} := services.All{{TitleName}}()
+
+		artifact.Res.Data({{PluralLowerName}}).Json(c)
+	}
+}
+
+func {{TitleName}}Create() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var {{SingularLowerName}} models.{{TitleName}}
+
+		defer func() {
+			if err := recover(); err != nil {
+				artifact.Res.Status(http.StatusUnprocessableEntity).Message("error").Data(err).Json(c)
+			}
+		}()
+
+		if err := c.ShouldBind(&{{SingularLowerName}}); err != nil {
+			artifact.Res.Status(http.StatusBadRequest).Message("Bad Request").Data(err.Error()).AbortWithStatusJSON(c)
+			return
+		}
+
+		{{SingularLowerName}} = services.CreateA{{TitleName}}({{SingularLowerName}})
+
+		artifact.Res.Status(http.StatusCreated).Message("success").Data({{SingularLowerName}}).Json(c)
+	}
+}
+
+func {{TitleName}}Show() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		defer func() {
+			if err := recover(); err != nil {
+				artifact.Res.Status(http.StatusNotFound).Message(http.StatusText(http.StatusNotFound)).Json(c)
+			}
+		}()
+
+		{{SingularLowerName}}Id := c.Param("{{SingularLowerName}}Id")
+
+		{{SingularLowerName}} := services.A{{TitleName}}({{SingularLowerName}}Id)
+
+		artifact.Res.Status(http.StatusOK).Message("success").Data({{SingularLowerName}}).Json(c)
+	}
+}
+
+func {{TitleName}}Update() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var update{{TitleName}} models.{{TitleName}}
+
+		defer func() {
+			if err := recover(); err != nil {
+				artifact.Res.Status(http.StatusUnprocessableEntity).Message(http.StatusText(http.StatusUnprocessableEntity)).Data(err).Json(c)
+			}
+		}()
+
+		{{SingularLowerName}}Id := c.Param("{{SingularLowerName}}Id")
+
+		if err := c.ShouldBind(&update{{TitleName}}); err != nil {
+			artifact.Res.Status(http.StatusBadRequest).Message(http.StatusText(http.StatusBadRequest)).Data(err.Error()).AbortWithStatusJSON(c)
+			return
+		}
+
+		{{SingularLowerName}}, err := services.UpdateA{{TitleName}}({{SingularLowerName}}Id, update{{TitleName}})
+
+		if err != nil {
+			artifact.Res.Status(http.StatusInternalServerError).Message(http.StatusText(http.StatusInternalServerError)).Json(c)
+			return
+		}
+
+		artifact.Res.Status(http.StatusOK).Message("Successfully Updated !!!").Data({{SingularLowerName}}).Json(c)
+	}
+}
+
+func {{TitleName}}Delete() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		defer func() {
+			if err := recover(); err != nil {
+				artifact.Res.Status(http.StatusUnprocessableEntity).Message("error").Data(err).Json(c)
+			}
+		}()
+
+		{{SingularLowerName}}Id := c.Param("{{SingularLowerName}}Id")
+		{{SingularLowerName}}, err := services.DeleteA{{TitleName}}({{SingularLowerName}}Id)
+
+		if !err {
+			artifact.Res.Status(http.StatusInternalServerError).Message("something wrong").Json(c)
+			return
+		}
+
+		artifact.Res.Status(http.StatusOK).Message("Successfully Delete !!!").Data({{SingularLowerName}}).Json(c)
+	}
+}

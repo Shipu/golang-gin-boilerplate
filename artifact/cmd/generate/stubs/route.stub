@@ -1,0 +1,14 @@
+package routes
+
+import (
+	"golang-gin-boilerplate/artifact"
+	. "golang-gin-boilerplate/pkg/{{SingularLowerName}}/controllers"
+)
+
+func Setup() {
+	artifact.Router.GET("{{PluralLowerName}}", {{TitleName}}Index())
+	artifact.Router.POST("{{PluralLowerName}}", {{TitleName}}Create())
+	artifact.Router.GET("{{PluralLowerName}}/:{{SingularLowerName}}Id", {{TitleName}}Show())
+	artifact.Router.PUT("{{PluralLowerName}}/:{{SingularLowerName}}Id", {{TitleName}}Update())
+	artifact.Router.DELETE("{{PluralLowerName}}/:{{SingularLowerName}}Id", {{TitleName}}Delete())
+}
