@@ -21,23 +21,23 @@ func crud(cmd *cobra.Command, args []string) error {
 
 	hasDir, _ := afero.DirExists(afero.NewOsFs(), "pkg")
 	if !hasDir {
-		afero.NewOsFs().MkdirAll("pkg", 0755)
+		afero.NewOsFs().Mkdir("pkg", 0755)
 	}
 
 	fs := afero.NewBasePathFs(afero.NewOsFs(), "pkg/")
 
 	createFolders(fs, name)
 	createFiles(fs, name)
-	
+
 	return nil
 }
 
 func createFolders(fs afero.Fs, name string) {
-	fs.MkdirAll(name, 0755)
-	fs.MkdirAll(name+"/controllers", 0755)
-	fs.MkdirAll(name+"/models", 0755)
-	fs.MkdirAll(name+"/routes", 0755)
-	fs.MkdirAll(name+"/services", 0755)
+	fs.Mkdir(name, 0755)
+	fs.Mkdir(name+"/controllers", 0755)
+	fs.Mkdir(name+"/models", 0755)
+	fs.Mkdir(name+"/routes", 0755)
+	fs.Mkdir(name+"/services", 0755)
 }
 
 func createFiles(fs afero.Fs, name string) {
