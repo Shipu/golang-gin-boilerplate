@@ -19,10 +19,16 @@ var cliCmd = &cobra.Command{
 func crud(cmd *cobra.Command, args []string) error {
 	name := args[0]
 
+	hasDir, _ := afero.DirExists(afero.NewOsFs(), "pkg")
+	if !hasDir {
+		afero.NewOsFs().MkdirAll("pkg", 0755)
+	}
+
 	fs := afero.NewBasePathFs(afero.NewOsFs(), "pkg/")
 
 	createFolders(fs, name)
 	createFiles(fs, name)
+	
 	return nil
 }
 
