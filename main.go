@@ -15,7 +15,7 @@ func main() {
 	// After Initialize Set up the application for serve
 	artifact.Start() // Database connection will be established here
 	config.Boot()    // if you need any initialization
-
+	
 	artifact.Run()
 
 }

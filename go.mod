@@ -4,12 +4,13 @@ go 1.17
 
 require (
 	github.com/gin-gonic/gin v1.7.7
-	github.com/shipu/artifact v1.1.1
+	github.com/shipu/artifact v1.1.3
 	go.mongodb.org/mongo-driver v1.8.3
 )
 
 require (
 	github.com/fsnotify/fsnotify v1.5.1 // indirect
+	github.com/gertd/go-pluralize v0.2.0 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/go-playground/locales v0.14.0 // indirect
 	github.com/go-playground/universal-translator v0.18.0 // indirect
@@ -19,6 +20,7 @@ require (
 	github.com/golang/snappy v0.0.4 // indirect
 	github.com/goldeneggg/structil v0.8.1 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
+	github.com/inconshreveable/mousetrap v1.0.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/klauspost/compress v1.14.4 // indirect
 	github.com/leodido/go-urn v1.2.1 // indirect
@@ -32,6 +34,7 @@ require (
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/spf13/afero v1.8.1 // indirect
 	github.com/spf13/cast v1.4.1 // indirect
+	github.com/spf13/cobra v1.3.0 // indirect
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/spf13/viper v1.10.1 // indirect

@@ -3,7 +3,7 @@ package routes
 import (
 	"github.com/gin-gonic/gin"
 	. "github.com/shipu/artifact"
-	todoRoute "github.com/shipu/golang-gin-boilerplate/pkg/todo/routes"
+	todoRoute "github.com/shipu/golang-gin-boilerplate/src/todo/routes"
 )
 
 func Register() {
@@ -13,6 +13,7 @@ func Register() {
 }
 
 func BaseRoute() {
+	// Example Route
 	Router.GET("/", func(c *gin.Context) {
 		data := map[string]interface{}{
 			"app": Config.GetString("App.Name"),

@@ -4,8 +4,8 @@ import "C"
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/shipu/artifact"
-	"github.com/shipu/golang-gin-boilerplate/pkg/todo/models"
-	"github.com/shipu/golang-gin-boilerplate/pkg/todo/services"
+	"github.com/shipu/golang-gin-boilerplate/src/todo/models"
+	"github.com/shipu/golang-gin-boilerplate/src/todo/services"
 	"net/http"
 )
 

@@ -2,7 +2,7 @@ package config
 
 import (
 	. "github.com/shipu/artifact"
-	todo "github.com/shipu/golang-gin-boilerplate/pkg/todo/models"
+	todo "github.com/shipu/golang-gin-boilerplate/src/todo/models"
 )
 
 func Register() {
