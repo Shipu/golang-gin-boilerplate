@@ -34,18 +34,18 @@ func AllTodo() []models.Todo {
 }
 
 func CreateATodo(todo models.Todo) models.Todo {
-	newEnrollment := models.Todo{
+	newTodo := models.Todo{
 		Id:     primitive.NewObjectID(),
 		Task:   todo.Task,
 		Status: todo.Status,
 	}
 
-	result, err := models.TodoCollection.InsertOne(newEnrollment)
+	result, err := models.TodoCollection.InsertOne(newTodo)
 	if err != nil || result == nil {
 		panic(err)
 	}
 
-	return newEnrollment
+	return newTodo
 }
 
 func UpdateATodo(todoId string, updateTodo models.Todo) (models.Todo, error) {
