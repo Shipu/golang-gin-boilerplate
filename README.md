@@ -66,13 +66,13 @@ func Boot() {
 }
 ```
 
-Done !!! 
+Congratulation !!! You have successfully generated rest crud api. 
 
-And you can run your application with `go run main.go` command or `air`.
+Now you can run your application with `go run main.go` command or `air`.
 
 ## Config :
 
-Suppose your `config/db.go` config is:
+Suppose your config is `config/db.go`:
 ```go
 package config
 
@@ -85,7 +85,7 @@ type DatabaseConfig struct {
 	Connection string `mapstructure:"DB_CONNECTION" default:""`
 }
 ```
-and your `.env` file is:
+and your `.env` is:
 ```dotenv
 DB_CONNECTION=mongodb
 DB_HOST=
@@ -97,8 +97,7 @@ DB_DATABASE=
 
 For initialization `DatabaseConfig` config. 
 
-### Example
-in `config/main.go`
+add below example code in `config/main.go`
 ```go
 import (
     ...	
@@ -114,13 +113,30 @@ func Register() {
     ...
     Config.AddConfig("DB", new(DatabaseConfig)).Load()
 }
+
+func Boot() {
+    ...
+    ...
+}
 ```
 
 if you want to run something when application start, you can add anything in `Boot` function.
 
+### To get config:
+```go
+Config.GetString("DB.Host")
+```
+
+Config Method List:
+```go
+GetString("key")
+GetInt("key")
+Get("key")
+```
+
 ## Route
 
-Suppose your route `notice/routes/api.go` is:
+Suppose example route is `notice/routes/api.go`:
 ```go
 package routes
 
@@ -139,7 +155,7 @@ func Setup() {
 }
 ```
 
-For Register your route. in `routes/main.go`
+For Register example route. in `routes/main.go`
 
 ```go
 import (
@@ -157,3 +173,13 @@ func Register() {
     noticeRoute.Setup()
 }
 ```
+
+## Mongo Collection
+
+```go
+var TodoCollection artifact.MongoCollection = artifact.Mongo.Collection("todos")
+
+TodoCollection.Find(bson.M{})
+```
+
+All [Go Mongo Driver](https://docs.mongodb.com/drivers/go/current/) Support.
