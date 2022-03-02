@@ -174,6 +174,39 @@ func Register() {
 }
 ```
 
+## Response
+In [Gin](https://github.com/gin-gonic/gin)
+
+Where `c` is the `*gin.Context` context.
+
+```go
+data := map[string]interface{}{
+    "app": "Golang",
+}
+c.JSON(200, gin.H{
+    "status_code":  200,
+    "message": "Success",
+    "data": data,
+})
+```
+In artifact boilerplate, you can use `Res`.
+```go
+data := map[string]interface{}{
+    "app": "Golang",
+}
+
+Res.Status(200).
+    Message("Success").
+    Data(data).
+	Json(c)
+```
+
+`Res` Api Methods:
+```go
+Json(c *gin.Context)
+AbortWithStatusJSON(c *gin.Context)
+```
+
 ## Mongo Collection
 
 ```go
