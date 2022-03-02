@@ -205,10 +205,22 @@ Res.Code(200).
 	Json(c)
 ```
 
+
 `Res` Api Methods:
 ```go
-Json(c *gin.Context)
-AbortWithStatusJSON(c *gin.Context)
+Json
+PureJSON
+JsonP
+AsciiJSON
+IndentedJSON
+Html
+Xml
+Yaml
+ProtoBuf
+AbortWithStatusJSON
+Abort
+AbortWithError
+Redirect
 ```
 
 ## Mongo Collection
