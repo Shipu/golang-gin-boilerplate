@@ -383,8 +383,8 @@ github.com/sagikazarmark/crypt v0.1.0/go.mod h1:B/mN0msZuINBtQ1zZLEQcegFJJf9vnYI
 github.com/sagikazarmark/crypt v0.3.0/go.mod h1:uD/D+6UF4SrIR1uGEv7bBNkNqLGqUr43MRiaGWX1Nig=
 github.com/sagikazarmark/crypt v0.4.0/go.mod h1:ALv2SRj7GxYV4HO9elxH9nS6M9gW+xDNxqmyJ6RfDFM=
 github.com/sean-/seed v0.0.0-20170313163322-e2103e2c3529/go.mod h1:DxrIzT+xaE7yg65j358z/aeFdxmN0P9QXhEzd20vsDc=
-github.com/shipu/artifact v1.1.5 h1:Afa93UvYuI8ZHtXVlQCWUNdBjSl2ypaZYDPhsKKA+tg=
-github.com/shipu/artifact v1.1.5/go.mod h1:rdm9UM0E7D5lPxMindZimJsEdJqy49CBCRXB8a1N9Uo=
+github.com/shipu/artifact v1.1.7 h1:qIgxQdQhDVEQDkBapUUBHiAeqCSlbUAcbyf08wZ4kvY=
+github.com/shipu/artifact v1.1.7/go.mod h1:rdm9UM0E7D5lPxMindZimJsEdJqy49CBCRXB8a1N9Uo=
 github.com/sirupsen/logrus v1.2.0/go.mod h1:LxeOpSwHxABJmUn/MG1IvRgCAasNZTLOkJPxbbu5VWo=
 github.com/sirupsen/logrus v1.4.2/go.mod h1:tLMulIdttU9McNUspp0xgXVQah82FyeX6MwdIuYE2rE=
 github.com/spaolacci/murmur3 v0.0.0-20180118202830-f09979ecbc72/go.mod h1:JwIasOWyU6f++ZhiEuf87xNszmSA2myDM2Kzu9HwQUA=

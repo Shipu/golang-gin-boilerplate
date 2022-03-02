@@ -4,7 +4,7 @@ go 1.17
 
 require (
 	github.com/gin-gonic/gin v1.7.7
-	github.com/shipu/artifact v1.1.6
+	github.com/shipu/artifact v1.1.7
 	go.mongodb.org/mongo-driver v1.8.3
 )
 

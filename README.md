@@ -199,7 +199,7 @@ data := map[string]interface{}{
     "app": "Golang",
 }
 
-Res.Status(200).
+Res.Code(200).
     Message("Success").
     Data(data).
 	Json(c)

@@ -24,7 +24,7 @@ func BaseRoute() {
 		//	"message": "Hello World",
 		//}
 
-		Res.Status(200).
+		Res.Code(200).
 			Message("success").
 			Data(data).Json(c)
 	})
