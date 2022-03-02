@@ -1,5 +1,5 @@
 # golang-gin-boilerplate
-Golang Gin Boilerplate for Rest Api
+Golang [Artifact](https://github.com/shipu/artifact) Boilerplate for Rest Api. It's based on [Gin](https://github.com/gin-gonic/gin)
 
 ## For Generate Crud: 
 ```go
