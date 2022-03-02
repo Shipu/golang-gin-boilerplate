@@ -1,6 +1,10 @@
 # golang-gin-boilerplate
 Golang [Artifact](https://github.com/shipu/artifact) Boilerplate for Rest Api. It's based on [Gin](https://github.com/gin-gonic/gin)
 
+create .env file if not exists in root directory:
+```shell
+cp .env.example .env
+```
 ## For Generate Crud: 
 ```go
 go run ./art crud package_name crud_module_name
