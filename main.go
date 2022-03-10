@@ -6,6 +6,11 @@ import (
 	"github.com/shipu/golang-gin-boilerplate/routes"
 )
 
+// @title        Artifact Boilerplate
+// @version      1.0
+// @description  example of artifact web-framework
+
+// @BasePath  /api/v1
 func main() {
 	// Initialize the application
 	artifact.New()
@@ -15,7 +20,7 @@ func main() {
 	// After Initialize Set up the application for serve
 	artifact.Start() // Database connection will be established here
 	config.Boot()    // if you need any initialization
-	
+
 	artifact.Run()
 
 }

@@ -1,54 +1,62 @@
 package services
 
 import (
-	"context"
 	"fmt"
+	pagination "github.com/gobeam/mongo-go-pagination"
+	"github.com/shipu/golang-gin-boilerplate/src/todo/dto"
 	"github.com/shipu/golang-gin-boilerplate/src/todo/models"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"log"
+	"strconv"
+    "time"
 )
 
-func AllTodo() []models.Todo {
-	cursor, err, ctx := models.TodoCollection.Find(bson.M{})
-
+func AllTodo(requestFilter map[string]interface{}) ([]models.Todo, pagination.PaginationData) {
 	var todos []models.Todo
 
+	filter := bson.M{}
+
+	if requestFilter["status"] != "" {
+		filter["status"] = requestFilter["status"]
+	}
+
+	page, _ := strconv.ParseInt(requestFilter["page"].(string), 10, 64)
+	limit, _ := strconv.ParseInt(requestFilter["limit"].(string), 10, 64)
+
+	paginatedData, err := pagination.New(models.TodoCollection.Collection).
+		Page(page).
+		Limit(limit).
+		Sort("created_at", -1).
+		Decode(&todos).
+		Filter(filter).
+		Find()
+
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
-	if err = cursor.All(ctx, &todos); err != nil {
-		log.Fatal(err)
-	}
-
-	defer func(cursor *mongo.Cursor, ctx context.Context) {
-		var err = cursor.Close(ctx)
-		if err != nil {
-
-		}
-	}(cursor, ctx)
-
-	return todos
+	return todos, paginatedData.Pagination
 }
 
-func CreateATodo(todo models.Todo) models.Todo {
-	newTodo := models.Todo{
-		Id:     primitive.NewObjectID(),
-		Task:   todo.Task,
-		Status: todo.Status,
+func CreateATodo(createTodoDto dto.CreateTodoRequest) models.Todo {
+	todo := models.Todo{
+		Id:                 primitive.NewObjectID(),
+		Task:               createTodoDto.Task,
+		Status:             createTodoDto.Status,
+		CreatedAt:          time.Now(),
+		UpdatedAt:          time.Now(),
 	}
 
-	result, err := models.TodoCollection.InsertOne(newTodo)
+	result, err := models.TodoCollection.InsertOne(todo)
 	if err != nil || result == nil {
 		panic(err)
 	}
 
-	return newTodo
+	return todo
 }
 
-func UpdateATodo(todoId string, updateTodo models.Todo) (models.Todo, error) {
+func UpdateATodo(todoId string, updateTodoDto dto.UpdateTodoRequest) (models.Todo, error) {
 
 	objId, _ := primitive.ObjectIDFromHex(todoId)
 
@@ -59,20 +67,29 @@ func UpdateATodo(todoId string, updateTodo models.Todo) (models.Todo, error) {
 		Upsert:         &upsert,
 	}
 
-	result := models.TodoCollection.FindOneAndUpdate(bson.M{"_id": objId}, bson.D{
-		{"$set", bson.M{"task": updateTodo.Task, "status": updateTodo.Status}},
-	}, &opt)
+	result := models.TodoCollection.FindOneAndUpdate(
+		bson.M{"_id": objId},
+		bson.D{
+			{"$set", bson.M{
+				"task":                updateTodoDto.Task,
+				"status":              updateTodoDto.Status,
+				"updated_at":          time.Now(),
+			}},
+		},
+		&opt,
+	)
 
 	if result.Err() != nil {
 		log.Println("Err ", result.Err())
 		return models.Todo{}, result.Err()
 	}
 
-	if err := result.Decode(&updateTodo); err != nil {
+	var todo models.Todo
+	if err := result.Decode(&todo); err != nil {
 		return models.Todo{}, err
 	}
 
-	return updateTodo, nil
+	return todo, nil
 }
 
 func ATodo(todoId string) models.Todo {
@@ -90,17 +107,14 @@ func ATodo(todoId string) models.Todo {
 	return todo
 }
 
-func DeleteATodo(todoId string) (error, bool) {
-	var todo models.Todo
-
+func DeleteATodo(todoId string) bool {
 	objId, _ := primitive.ObjectIDFromHex(todoId)
 
 	result := models.TodoCollection.FindOneAndDelete(bson.D{{"_id", objId}})
 
 	if result.Err() != nil {
-		return result.Err(), false
+		return false
 	}
 
-	return result.Decode(&todo), true
-
+	return true
 }

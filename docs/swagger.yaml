@@ -1,0 +1,159 @@
+basePath: /api/v1
+definitions:
+  dto.CreateTodoRequest:
+    properties:
+      status:
+        description: 'required: true'
+        enum:
+        - active
+        - inactive
+        type: string
+      task:
+        description: 'required: true'
+        maxLength: 300
+        minLength: 1
+        type: string
+    required:
+    - status
+    - task
+    type: object
+  dto.UpdateTodoRequest:
+    properties:
+      status:
+        description: 'required: true'
+        enum:
+        - active
+        - inactive
+        type: string
+      task:
+        description: 'required: true'
+        maxLength: 300
+        minLength: 1
+        type: string
+    required:
+    - status
+    - task
+    type: object
+info:
+  contact: {}
+  description: example of artifact web-framework
+  title: Artifact Boilerplate
+  version: "1.0"
+paths:
+  /todos:
+    get:
+      consumes:
+      - application/json
+      description: All todos
+      parameters:
+      - description: Page
+        in: query
+        name: page
+        type: string
+      - description: Limit
+        in: query
+        name: limit
+        type: string
+      - description: Status
+        in: query
+        name: status
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+        "401":
+          description: ""
+      summary: all todos
+      tags:
+      - Todo
+    post:
+      consumes:
+      - application/json
+      description: create a todo
+      parameters:
+      - description: Create Todo Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateTodoRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+        "401":
+          description: ""
+      summary: create a todo
+      tags:
+      - Todo
+  /todos/{todoId}:
+    delete:
+      consumes:
+      - application/json
+      description: delete a todo
+      parameters:
+      - description: Todo ID
+        in: path
+        name: todoId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+        "422":
+          description: ""
+      summary: delete a todo
+      tags:
+      - Todo
+    get:
+      consumes:
+      - application/json
+      description: Todo Details
+      parameters:
+      - description: Todo ID
+        in: path
+        name: todoId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+        "401":
+          description: ""
+      summary: todo details
+      tags:
+      - Todo
+    put:
+      consumes:
+      - application/json
+      description: update a todo
+      parameters:
+      - description: Todo ID
+        in: path
+        name: todoId
+        required: true
+        type: string
+      - description: Update Todo Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateTodoRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+        "401":
+          description: ""
+      summary: update a todo
+      tags:
+      - Todo
+swagger: "2.0"

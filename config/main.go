@@ -12,5 +12,5 @@ func Register() {
 }
 
 func Boot() {
-	todo.Setup()
+	todo.TodoSetup()
 }
