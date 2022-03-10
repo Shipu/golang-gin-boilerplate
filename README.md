@@ -74,6 +74,8 @@ Congratulation !!! You have successfully generated rest crud api.
 
 Now you can run your application with `go run main.go` command or `air`.
 
+Swagger Api Documentation: [http://localhost:8080/docs/index.html](http://localhost:8080/docs/index.html)
+
 ## Config :
 
 Suppose your config is `config/db.go`:
