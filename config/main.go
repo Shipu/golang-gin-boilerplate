@@ -8,6 +8,7 @@ import (
 func Register() {
 	Config.AddConfig("App", new(AppConfig))
 	Config.AddConfig("DB", new(DatabaseConfig))
+	Config.AddConfig("NoSql", new(MongoConfig))
 	Config.Load()
 }
 

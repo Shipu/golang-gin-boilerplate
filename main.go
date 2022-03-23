@@ -18,8 +18,9 @@ func main() {
 	routes.Register() // will register all the routes
 
 	// After Initialize Set up the application for serve
-	artifact.Start() // Database connection will be established here
-	config.Boot()    // if you need any initialization
+	artifact.NoSqlConnection()    // Mongo connection will be established here
+	artifact.DatabaseConnection() // Relation Database connection will be established here
+	config.Boot()                 // if you need any initialization
 
 	artifact.Run()
 
