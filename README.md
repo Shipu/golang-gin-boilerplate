@@ -47,7 +47,7 @@ import (
 func Register() {
     ...
     ...
-    noticeRoute.Setup()
+    noticeRoute.NoticeSetup()
 }
 ```
 #### For Initialize Model Collection:
@@ -66,7 +66,7 @@ import (
 func Boot() {
     ...
     ...
-    notice.Setup()
+    notice.NoticeSetup()
 }
 ```
 
