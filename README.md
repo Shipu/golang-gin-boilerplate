@@ -78,30 +78,30 @@ Swagger Api Documentation: [http://localhost:8080/docs/index.html](http://localh
 
 ## Config :
 
-Suppose your config is `config/db.go`:
+Suppose your config is `config/mongo.go`:
 ```go
 package config
 
-type DatabaseConfig struct {
-	Username   string `mapstructure:"DB_USER" default:""`
-	Password   string `mapstructure:"DB_PASS" default:""`
-	Host       string `mapstructure:"DB_HOST" default:""`
-	Port       string `mapstructure:"DB_PORT" default:""`
-	Database   string `mapstructure:"DB_DATABASE" default:""`
-	Connection string `mapstructure:"DB_CONNECTION" default:""`
+type MongoConfig struct {
+	Username   string `mapstructure:"MONGO_USER" default:""`
+	Password   string `mapstructure:"MONGO_PASS" default:""`
+	Host       string `mapstructure:"MONGO_HOST" default:""`
+	Port       string `mapstructure:"MONGO_PORT" default:""`
+	Database   string `mapstructure:"MONGO_DATABASE" default:""`
+	Connection string `mapstructure:"MONGO_CONNECTION" default:"mongodb"`
 }
 ```
 and your `.env` is:
 ```dotenv
-DB_CONNECTION=mongodb
-DB_HOST=
-DB_PORT=
-DB_USER=
-DB_PASS=
-DB_DATABASE=
+MONGO_CONNECTION=mongodb
+MONGO_HOST=
+MONGO_PORT=
+MONGO_USER=
+MONGO_PASS=
+MONGO_DATABASE=
 ```
 
-For initialization `DatabaseConfig` config. 
+For initialization `MongoConfig` config. 
 
 add below example code in `config/main.go`
 ```go
@@ -117,7 +117,7 @@ import (
 func Register() {
     ...
     ...
-    Config.AddConfig("DB", new(DatabaseConfig)).Load()
+    Config.AddConfig("NoSql", new(MongoConfig)).Load()
 }
 
 func Boot() {
@@ -130,7 +130,7 @@ if you want to run something when application start, you can add anything in `Bo
 
 ### To get config:
 ```go
-Config.GetString("DB.Host")
+Config.GetString("NoSql.Host")
 ```
 
 Config Method List:
