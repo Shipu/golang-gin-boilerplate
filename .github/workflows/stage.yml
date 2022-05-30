@@ -1,0 +1,48 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches:
+      - stage
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+    environment: stage
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Get Brandh and SHA
+        id: vars
+        shell: bash
+        run: |
+          echo "::set-output name=tag::${GITHUB_REF#refs/heads/}-$(git rev-parse --short HEAD)"
+          echo "secret ${{secrets.CLUSTER_NAME}}"
+          echo "env ${{env.CLUSTER_NAME}}"
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-southeast-1
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build, tag, and push image to Amazon ECR
+        env:
+          ECR_REGISTRY: ${{ secrets.AWS_ECR_REGISTRY }}
+        run: |
+          docker build . --file Dockerfile -t $ECR_REGISTRY/tracker-service:${{ steps.vars.outputs.tag }}
+          docker push $ECR_REGISTRY/tracker-service:${{ steps.vars.outputs.tag }}
+      - name: Deploy to Cluster
+        uses: ianbelcher/eks-kubectl-action@master
+        with:
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_region: ap-southeast-1
+          cluster_name: ${{ secrets.CLUSTER_NAME }}
+          args: set image --record deployment/tracker-service tracker-service=${{ secrets.AWS_ECR_REGISTRY }}/tracker-service:${{ steps.vars.outputs.tag }}
