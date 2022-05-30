@@ -5,8 +5,8 @@ import (
 	c "github.com/shipu/golang-gin-boilerplate/src/todo/controllers"
 )
 
-func Setup() {
-    v1 := Router.Group("api/v1")
+func TodoSetup() {
+	v1 := Router.Group("api/v1")
 	v1.GET("todos", c.TodoIndex())
 	v1.POST("todos", c.TodoCreate())
 	v1.GET("todos/:todoId", c.TodoShow())
