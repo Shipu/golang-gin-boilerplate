@@ -1,4 +1,4 @@
-ARG GO_VERSION=1.17
+ARG GO_VERSION=1.22
 
 FROM golang:${GO_VERSION} as dev
 

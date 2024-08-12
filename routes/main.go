@@ -3,6 +3,7 @@ package routes
 import (
 	"encoding/json"
 	"github.com/ghodss/yaml"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	. "github.com/shipu/artifact"
 	todoRoute "github.com/shipu/golang-gin-boilerplate/src/todo/routes"
@@ -11,11 +12,13 @@ import (
 	"io/ioutil"
 	"os"
 	"strings"
+	"time"
 )
 
 func Register() {
 	BaseRoute()
 	SwaggerRoute()
+	EnableCors()
 
 	todoRoute.TodoSetup()
 }
@@ -36,6 +39,18 @@ func BaseRoute() {
 			Message("success").
 			Data(data).Json(c)
 	})
+}
+
+func EnableCors() {
+	corsConfig := cors.Config{
+		AllowOrigins:     []string{"*"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD"},
+		AllowHeaders:     []string{"Content-Type", "Content-Length", "Accept-Encoding", "X-CSRF-Token", "Authorization", "Accept", "Origin", "Cache-Control", "X-Requested-With", "Referer", "guest", "publicKey", "Access-Control-Allow-Origin"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		MaxAge:           12 * time.Hour,
+	}
+	Router.Use(cors.New(corsConfig))
 }
 
 func SwaggerRoute() {
