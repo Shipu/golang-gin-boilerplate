@@ -2,6 +2,7 @@ package config
 
 import (
 	. "github.com/shipu/artifact"
+	task "github.com/shipu/golang-gin-boilerplate/src/task/models"
 	todo "github.com/shipu/golang-gin-boilerplate/src/todo/models"
 )
 
@@ -14,4 +15,5 @@ func Register() {
 
 func Boot() {
 	todo.TodoSetup()
+	task.TaskSetup()
 }
