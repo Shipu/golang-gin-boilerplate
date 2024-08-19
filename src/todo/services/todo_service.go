@@ -10,7 +10,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"log"
 	"strconv"
-    "time"
+	"time"
 )
 
 func AllTodo(requestFilter map[string]interface{}) ([]models.Todo, pagination.PaginationData) {
@@ -41,11 +41,11 @@ func AllTodo(requestFilter map[string]interface{}) ([]models.Todo, pagination.Pa
 
 func CreateATodo(createTodoDto dto.CreateTodoRequest) models.Todo {
 	todo := models.Todo{
-		Id:                 primitive.NewObjectID(),
-		Task:               createTodoDto.Task,
-		Status:             createTodoDto.Status,
-		CreatedAt:          time.Now(),
-		UpdatedAt:          time.Now(),
+		Id:        primitive.NewObjectID(),
+		Todo:      createTodoDto.Todo,
+		Status:    createTodoDto.Status,
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
 	}
 
 	result, err := models.TodoCollection.InsertOne(todo)
@@ -71,9 +71,9 @@ func UpdateATodo(todoId string, updateTodoDto dto.UpdateTodoRequest) (models.Tod
 		bson.M{"_id": objId},
 		bson.D{
 			{"$set", bson.M{
-				"task":                updateTodoDto.Task,
-				"status":              updateTodoDto.Status,
-				"updated_at":          time.Now(),
+				"todo":       updateTodoDto.Todo,
+				"status":     updateTodoDto.Status,
+				"updated_at": time.Now(),
 			}},
 		},
 		&opt,
