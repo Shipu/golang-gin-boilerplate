@@ -1,6 +1,7 @@
 package services
 
 import (
+	"fmt"
 	"github.com/shipu/artifact"
 	"github.com/shipu/golang-gin-boilerplate/src/task/dto"
 	"github.com/shipu/golang-gin-boilerplate/src/task/models"
@@ -22,7 +23,7 @@ func AllTask(requestFilter map[string]interface{}) ([]models.Task, artifact.Pagi
 	return todos, paginationInstance.Meta, nil
 
 	// cursor pagination demo
-	//result, cursor, err := paginationInstance.Paginate(models.TaskTable.Where(filter), &todos)
+	//result, cursor, err := paginationInstance.Paginate(models.TaskModel.Where(filter), &todos)
 	//if err != nil {
 	//	return nil, cursor, err
 	//}
@@ -31,13 +32,13 @@ func AllTask(requestFilter map[string]interface{}) ([]models.Task, artifact.Pagi
 	//	return nil, paginator.Cursor{}, result.Error
 	//}
 	//
-	//return tasks, cursor, nil
+	//return todos, cursor, nil
 }
 
-func CreateATask(createTodoDto dto.CreateTaskRequest) models.Task {
+func CreateATask(createTaskDto dto.CreateTaskRequest) models.Task {
 	todo := models.Task{
-		Task:   createTodoDto.Task,
-		Status: createTodoDto.Status,
+		Task:   createTaskDto.Task,
+		Status: createTaskDto.Status,
 	}
 
 	result := models.TaskModel.Create(&todo)
@@ -48,13 +49,13 @@ func CreateATask(createTodoDto dto.CreateTaskRequest) models.Task {
 	return todo
 }
 
-func UpdateATask(todoId string, updateTodoDto dto.UpdateTaskRequest) (models.Task, error) {
-	todo := models.Task{
-		Task:   updateTodoDto.Task,
-		Status: updateTodoDto.Status,
-	}
+func UpdateATask(todoId string, updateTaskDto dto.UpdateTaskRequest) (models.Task, error) {
+	todo := ATask(todoId)
 
-	models.TaskModel.Where("id = ?", todoId).Updates(&todo)
+	todo.Task = updateTaskDto.Task
+	todo.Status = updateTaskDto.Status
+
+	models.TaskModel.Save(&todo)
 
 	return todo, nil
 }
@@ -62,14 +63,23 @@ func UpdateATask(todoId string, updateTodoDto dto.UpdateTaskRequest) (models.Tas
 func ATask(todoId string) models.Task {
 	var todo models.Task
 
-	models.TaskModel.First(&todo, todoId)
+	result := models.TaskModel.First(&todo, todoId)
+
+	if result.Error != nil {
+		panic("Task not found")
+	}
 
 	return todo
 }
 
 func DeleteATask(todoId string) bool {
-	var todo models.Task
-	models.TaskModel.Delete(&todo, todoId)
+	todo := ATask(todoId)
+	result := models.TaskModel.Delete(&todo)
+	fmt.Print("result", result.Error)
+
+	if result.RowsAffected == 0 {
+		return false
+	}
 
 	return true
 }
