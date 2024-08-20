@@ -2,7 +2,6 @@ package models
 
 import (
 	"github.com/shipu/artifact"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"gorm.io/gorm"
 	"time"
 )
@@ -10,11 +9,12 @@ import (
 var TaskModel *gorm.DB
 
 type Task struct {
-	Id        primitive.ObjectID `json:"id,omitempty" bson:"_id"`
-	Task      string             `json:"task" bson:"task"`
-	Status    string             `json:"status" bson:"status"`
-	CreatedAt time.Time          `json:"created_at,omitempty" bson:"created_at"`
-	UpdatedAt time.Time          `json:"updated_at,omitempty" bson:"updated_at"`
+	//gorm.Model
+	Id        uint      `json:"id" gorm:"primaryKey"`
+	Task      string    `json:"task"`
+	Status    string    `json:"status"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
 }
 
 func TaskSetup() {
