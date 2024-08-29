@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/shipu/artifact"
 	"github.com/shipu/golang-gin-boilerplate/config"
+	"github.com/shipu/golang-gin-boilerplate/middlewares"
 	"github.com/shipu/golang-gin-boilerplate/routes"
 )
 
@@ -14,6 +15,10 @@ import (
 func main() {
 	// Initialize the application
 	artifact.New()
+
+	//global middleware to capture panic
+	artifact.Router.Use(middlewares.PanicRecoveryMiddleware())
+
 	config.Register() // will load the config file
 	routes.Register() // will register all the routes
 

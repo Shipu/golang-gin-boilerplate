@@ -12,6 +12,7 @@ require (
 	github.com/swaggo/gin-swagger v1.4.1
 	github.com/swaggo/swag v1.8.0
 	go.mongodb.org/mongo-driver v1.8.4
+	gorm.io/gorm v1.25.10
 )
 
 require (
@@ -93,5 +94,4 @@ require (
 	gorm.io/driver/mysql v1.3.2 // indirect
 	gorm.io/driver/postgres v1.5.9 // indirect
 	gorm.io/driver/sqlite v1.5.6 // indirect
-	gorm.io/gorm v1.25.10 // indirect
 )
