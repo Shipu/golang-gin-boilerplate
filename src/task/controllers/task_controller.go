@@ -55,12 +55,6 @@ func TaskCreate() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var createTodo dto.CreateTaskRequest
 
-		defer func() {
-			if err := recover(); err != nil {
-				artifact.Res.Code(http.StatusUnprocessableEntity).Message("error").Data(err).Json(c)
-			}
-		}()
-
 		if err := c.ShouldBind(&createTodo); err != nil {
 			artifact.Res.Code(http.StatusBadRequest).Message("Bad Request").Data(err.Error()).AbortWithStatusJSON(c)
 			return
@@ -85,12 +79,6 @@ func TaskCreate() gin.HandlerFunc {
 // @Router       /tasks/{taskId} [get]
 func TaskShow() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		defer func() {
-			if err := recover(); err != nil {
-				artifact.Res.Code(http.StatusNotFound).Message(http.StatusText(http.StatusNotFound)).Json(c)
-			}
-		}()
-
 		todoId := c.Param("todoId")
 
 		todo := services.ATask(todoId)
@@ -114,12 +102,6 @@ func TaskShow() gin.HandlerFunc {
 func TaskUpdate() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var updateTodo dto.UpdateTaskRequest
-
-		defer func() {
-			if err := recover(); err != nil {
-				artifact.Res.Code(http.StatusUnprocessableEntity).Message(http.StatusText(http.StatusUnprocessableEntity)).Data(err).Json(c)
-			}
-		}()
 
 		taskId := c.Param("taskId")
 
@@ -152,12 +134,6 @@ func TaskUpdate() gin.HandlerFunc {
 // @Router       /tasks/{taskId} [delete]
 func TaskDelete() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		defer func() {
-			if err := recover(); err != nil {
-				artifact.Res.Code(http.StatusUnprocessableEntity).Message("error").Data(err).Json(c)
-			}
-		}()
-
 		todoId := c.Param("todoId")
 		err := services.DeleteATask(todoId)
 

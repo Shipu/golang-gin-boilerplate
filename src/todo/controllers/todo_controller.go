@@ -23,20 +23,20 @@ import (
 // @Router       /todos [get]
 func TodoIndex() gin.HandlerFunc {
 	return func(c *gin.Context) {
-        page := c.DefaultQuery("page", "1")
-        limit := c.DefaultQuery("limit", "10")
-        status := c.DefaultQuery("status", "")
+		page := c.DefaultQuery("page", "1")
+		limit := c.DefaultQuery("limit", "10")
+		status := c.DefaultQuery("status", "")
 
-        var filter map[string]interface{} = make(map[string]interface{})
-        filter["page"] = page
-        filter["limit"] = limit
-        filter["status"] = status
+		var filter map[string]interface{} = make(map[string]interface{})
+		filter["page"] = page
+		filter["limit"] = limit
+		filter["status"] = status
 
-        todos, paginate := services.AllTodo(filter)
+		todos, paginate := services.AllTodo(filter)
 
-        artifact.Res.Code(200).Data(todos).Raw(map[string]interface{}{
-            "meta": paginate,
-        }).Json(c)
+		artifact.Res.Code(200).Data(todos).Raw(map[string]interface{}{
+			"meta": paginate,
+		}).Json(c)
 	}
 }
 
@@ -54,12 +54,6 @@ func TodoIndex() gin.HandlerFunc {
 func TodoCreate() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var createTodo dto.CreateTodoRequest
-
-		defer func() {
-			if err := recover(); err != nil {
-				artifact.Res.Code(http.StatusUnprocessableEntity).Message("error").Data(err).Json(c)
-			}
-		}()
 
 		if err := c.ShouldBind(&createTodo); err != nil {
 			artifact.Res.Code(http.StatusBadRequest).Message("Bad Request").Data(err.Error()).AbortWithStatusJSON(c)
@@ -85,12 +79,6 @@ func TodoCreate() gin.HandlerFunc {
 // @Router       /todos/{todoId} [get]
 func TodoShow() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		defer func() {
-			if err := recover(); err != nil {
-				artifact.Res.Code(http.StatusNotFound).Message(http.StatusText(http.StatusNotFound)).Json(c)
-			}
-		}()
-
 		todoId := c.Param("todoId")
 
 		todo := services.ATodo(todoId)
@@ -114,12 +102,6 @@ func TodoShow() gin.HandlerFunc {
 func TodoUpdate() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var updateTodo dto.UpdateTodoRequest
-
-		defer func() {
-			if err := recover(); err != nil {
-				artifact.Res.Code(http.StatusUnprocessableEntity).Message(http.StatusText(http.StatusUnprocessableEntity)).Data(err).Json(c)
-			}
-		}()
 
 		todoId := c.Param("todoId")
 
@@ -152,12 +134,6 @@ func TodoUpdate() gin.HandlerFunc {
 // @Router       /todos/{todoId} [delete]
 func TodoDelete() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		defer func() {
-			if err := recover(); err != nil {
-				artifact.Res.Code(http.StatusUnprocessableEntity).Message("error").Data(err).Json(c)
-			}
-		}()
-
 		todoId := c.Param("todoId")
 		err := services.DeleteATodo(todoId)
 
